@@ -21,15 +21,35 @@ public class BuscaEmpresa extends HttpServlet{
 	 */
 	private static final long serialVersionUID = -3224711501804764529L;
 
+	public BuscaEmpresa() {
+		System.out.println("Instanciando uma classe do tipo "+this);
+	}
+
+	@Override
+	public void init() throws ServletException {
+		System.out.println("iniciando a servlet "+this);
+		super.init();
+	}
+
+	@Override
+	public void destroy() {
+		System.out.println("Destruindo a servlet" +this);
+		super.destroy();
+	}
+	
+	String filtro;
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
 		PrintWriter writer = resp.getWriter();
-		String filtro = req.getParameter("filtro");
+		this.filtro = req.getParameter("filtro");
 		Collection<Empresa> empresas= new EmpresaDAO().buscaPorSimilaridade(filtro);
 		
-		
-		
+		try{
+			Thread.sleep(10000);
+		}catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
 		writer.println("<html><body>");
 		writer.println("Resultado da busca");
@@ -45,10 +65,4 @@ public class BuscaEmpresa extends HttpServlet{
 		writer.println("</ul>");
 		writer.println("</body> </html>");
 	}
-	
-	
-	
-	
-	
-
 }
